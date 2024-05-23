@@ -90,12 +90,16 @@ const getAllBooksHandler = (request, h) => {
     filteredBooks = filteredBooks.filter((b) => b.name.toLowerCase().includes(name.toLowerCase()));
   }
 
-  if (reading) {
-    filteredBooks = filteredBooks.filter((b) => b.reading === !!Number(reading));
+  if (reading !== undefined) {
+    filteredBooks = filteredBooks.filter(
+      (b) => b.reading === (reading === '1'),
+    );
   }
 
-  if (finished) {
-    filteredBooks = filteredBooks.filter((b) => b.finished === !!Number(finished));
+  if (finished !== undefined) {
+    filteredBooks = filteredBooks.filter(
+      (b) => b.finished === (finished === '1'),
+    );
   }
 
   const response = h.response({
@@ -116,13 +120,13 @@ const getAllBooksHandler = (request, h) => {
 const getBookByIdHandler = (request, h) => {
   const { bookId } = request.params;
 
-  const bookById = book.filter((b) => b.id === bookId)[0];
+  const b = book.filter((n) => n.id === bookId)[0];
 
-  if (bookById !== undefined) {
+  if (b !== undefined) {
     return {
       status: 'success',
       data: {
-        book,
+        book: b,
       },
     };
   }
